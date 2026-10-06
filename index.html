@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="GitHub 年度报告生成器 — 输入用户名，一键生成你的年度提交、星标、语言分布报告，并可下载可分享的报告卡片。" />
+  <meta name="keywords" content="GitHub,年度报告,年度总结,开发者统计,开源" />
+  <meta name="robots" content="index,follow" />
+  <meta name="color-scheme" content="dark" />
+  <meta name="theme-color" content="#0d1024" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="GitHub 年度报告 · Wrapped" />
+  <meta property="og:description" content="输入用户名，一键生成你的 GitHub 年度报告卡片。" />
+  <meta property="og:url" content="https://huqinyuan923-hue.github.io/github-wrapped/" />
+  <meta property="og:locale" content="zh_CN" />
+  <meta name="twitter:card" content="summary" />
+
+  <link rel="canonical" href="https://huqinyuan923-hue.github.io/github-wrapped/" />
+  <link rel="icon" href="icon.svg" type="image/svg+xml" />
+  <title>GitHub 年度报告 · Wrapped</title>
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="preconnect" href="https://api.github.com" />
+  <link rel="preconnect" href="https://avatars.githubusercontent.com" />
+</head>
+<body>
+  <noscript><p class="noscript-tip">⚠️ 本工具需要启用 JavaScript（数据来自 GitHub API，在浏览器内计算）。</p></noscript>
+
+  <header class="glow glow-a" aria-hidden="true"></header>
+  <header class="glow glow-b" aria-hidden="true"></header>
+
+  <main class="wrap">
+    <!-- 首屏 -->
+    <section id="hero">
+      <p class="eyebrow">GitHub Wrapped · 年度报告</p>
+      <h1>你的<span class="grad">2026</span> GitHub 年度报告</h1>
+      <p class="sub">输入用户名，10 秒生成提交、星标、语言分布与活跃概览，<br />并下载一张可分享的报告卡片。纯前端运行，无需登录。</p>
+
+      <form id="reportForm" class="search-box" autocomplete="off">
+        <span class="at" aria-hidden="true">@</span>
+        <input id="username" type="text" placeholder="GitHub 用户名，例如 huqinyuan923-hue" maxlength="39"
+          aria-label="GitHub 用户名" spellcheck="false" />
+        <button type="submit" id="goBtn" class="go-btn">生成报告</button>
+      </form>
+      <details class="token-box">
+        <summary>被限流了？填入 GitHub Token 提升限额（可选）</summary>
+        <input id="tokenInput" type="password" placeholder="ghp_… / github_pat_…（仅保存在本浏览器，不会上传）"
+          aria-label="GitHub Token（可选）" spellcheck="false" />
+        <p class="small muted">填入后在 <a href="https://github.com/settings/tokens?type=beta" target="_blank" rel="noopener noreferrer">GitHub 设置</a>
+          生成的只读 Token 可把限额从 60 次/小时提升到 5000 次/小时。Token 只保存在你的浏览器 localStorage，仅发送给 api.github.com。</p>
+      </details>
+      <p id="heroMsg" class="msg" role="status" aria-live="polite"></p>
+    </section>
+
+    <!-- 加载中 -->
+    <section id="loading" hidden>
+      <div class="spinner" aria-hidden="true"></div>
+      <p id="loadingText">正在从 GitHub 拉取数据…</p>
+    </section>
+
+    <!-- 报告 -->
+    <section id="report" hidden>
+      <div class="report-head">
+        <img id="rAvatar" alt="用户头像" width="72" height="72" referrerpolicy="no-referrer" />
+        <div>
+          <h2 id="rName">—</h2>
+          <p id="rLogin" class="muted">—</p>
+        </div>
+        <a id="rProfileLink" class="btn ghost" href="#" target="_blank" rel="noopener noreferrer">查看主页 ↗</a>
+      </div>
+
+      <div class="stat-grid" id="statGrid">
+        <div class="stat-card hero-stat"><b id="sCommits">0</b><span>今年提交</span></div>
+        <div class="stat-card"><b id="sRepos">0</b><span>公开仓库</span></div>
+        <div class="stat-card"><b id="sStars">0</b><span>累计星标</span></div>
+        <div class="stat-card"><b id="sFollowers">0</b><span>粉丝</span></div>
+        <div class="stat-card"><b id="sAge">0</b><span>码龄</span></div>
+        <div class="stat-card"><b id="sForks">0</b><span>获得 Fork</span></div>
+      </div>
+
+      <div class="panel-grid">
+        <div class="panel">
+          <h3>语言分布</h3>
+          <div id="langBars"></div>
+        </div>
+        <div class="panel">
+          <h3>星标之最</h3>
+          <div id="topRepos"></div>
+        </div>
+        <div class="panel">
+          <h3>动态概览 <small class="muted">（最近 300 条公开动态）</small></h3>
+          <div id="eventBars"></div>
+          <p id="eventMeta" class="muted small"></p>
+        </div>
+        <div class="panel">
+          <h3>报告说明</h3>
+          <ul class="notes">
+            <li>提交数来自 GitHub 提交搜索：统计<b>今年</b>你署名的公开仓库提交；含协作仓库，不含私有仓库。</li>
+            <li>数据来自 GitHub 公开 API，浏览器内计算，不做任何存储。</li>
+            <li>结果会被缓存 10 分钟，避免触发接口限流。</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分享卡片 -->
+      <div class="card-section">
+        <h3>可分享的报告卡片</h3>
+        <p class="muted small">1200×630，适合发朋友圈 / 微博 / X。</p>
+        <div class="card-frame">
+          <canvas id="shareCard" width="1200" height="630" aria-label="报告卡片预览"></canvas>
+        </div>
+        <div class="btn-row center">
+          <button id="downloadBtn" class="btn primary">下载卡片 PNG</button>
+          <button id="retryBtn" class="btn ghost">再查一个用户</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p>数据来自 GitHub 公开 API · 纯前端运行 ·
+        <a href="https://github.com/huqinyuan923-hue/github-wrapped" target="_blank" rel="noopener noreferrer">GitHub 开源</a>
+        · 更多工具：<a href="https://huqinyuan923-hue.github.io/toolbox/" target="_blank" rel="noopener noreferrer">开发者工具箱</a>
+      </p>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
