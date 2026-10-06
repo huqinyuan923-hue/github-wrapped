@@ -1,16 +1,16 @@
 # 🎁 GitHub 年度报告 · Wrapped
 
-[![GitHub Pages](https://img.shields.io/badge/在线使用-huqinyuan923--hue.github.io%2Fgithub--wrapped-8b7bff?logo=github)](https://huqinyuan923-hue.github.io/github-wrapped/)
+[![GitHub Pages](https://img.shields.io/badge/在线使用-huqinyuan923--hue.github.io%2Fgithub--wrapped-8b7bff?logo=github)](https://wrapped.adcakeyuan.top/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 输入 GitHub 用户名，**10 秒生成你的年度报告**：今年提交（估算）、星标、语言分布、动态概览，并下载一张 1200×630 的可分享报告卡片。
 
-**在线使用 → <https://huqinyuan923-hue.github.io/github-wrapped/>**
+**在线使用 → <https://wrapped.adcakeyuan.top/>**
 
 ![报告页](docs/screenshot-report.png)
 
 支持 `?u=用户名` 直达，例如：
-`https://huqinyuan923-hue.github.io/github-wrapped/?u=torvalds`
+`https://wrapped.adcakeyuan.top/?u=torvalds`
 
 ## ✨ 特性
 

@@ -5,3 +5,6 @@ desktop.ini
 .playwright-mcp/
 .mimosa/
 test-fixtures/
+
+.vercel
+.env*.local
