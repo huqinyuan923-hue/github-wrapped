@@ -20,10 +20,35 @@
   <link rel="icon" href="icon.svg" type="image/svg+xml" />
   <title>GitHub 年度报告 · Wrapped</title>
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    /* 进站动画：柱状图生长（每会话一次） */
+    #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#0d1117;font-family:system-ui,sans-serif;animation:gwOut .5s ease 1.9s forwards}
+    #boot .w-logo{color:#ec4899;font-size:clamp(24px,5vw,42px);font-weight:800;animation:gwIn .5s ease both}
+    #boot .w-bars{display:flex;align-items:flex-end;gap:9px;height:74px}
+    #boot .w-bars i{width:26px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#ec4899,#8b5cf6);transform:scaleY(0);transform-origin:bottom;animation:gwBar .45s cubic-bezier(.22,1,.36,1) both}
+    #boot .w-bars i:nth-child(1){height:34%;animation-delay:.3s}
+    #boot .w-bars i:nth-child(2){height:58%;animation-delay:.45s}
+    #boot .w-bars i:nth-child(3){height:42%;animation-delay:.6s}
+    #boot .w-bars i:nth-child(4){height:88%;animation-delay:.75s}
+    #boot .w-bars i:nth-child(5){height:64%;animation-delay:.9s}
+    #boot .w-bars i:nth-child(6){height:100%;animation-delay:1.05s}
+    #boot .w-sub{color:#94a3b8;font-size:13px;letter-spacing:.12em;opacity:0;animation:gwIn .35s ease 1.3s both}
+    @keyframes gwIn{from{opacity:0;transform:translateY(10px)}}
+    @keyframes gwBar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+    @keyframes gwOut{to{opacity:0;visibility:hidden;transform:scale(1.03)}}
+    @media (prefers-reduced-motion:reduce){#boot{display:none}}
+  </style>
   <link rel="preconnect" href="https://api.github.com" />
   <link rel="preconnect" href="https://avatars.githubusercontent.com" />
 </head>
 <body>
+  <!-- 进站引导（每会话一次） -->
+  <div id="boot" aria-hidden="true">
+    <div class="w-logo">GitHub · WRAPPED</div>
+    <div class="w-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="w-sub">YOUR YEAR IN CODE</div>
+  </div>
+  <script>try{if(sessionStorage.getItem('boot-seen')){var b=document.getElementById('boot');b&&(b.style.display='none')}else{sessionStorage.setItem('boot-seen','1')}}catch(e){}</script>
   <noscript><p class="noscript-tip">⚠️ 本工具需要启用 JavaScript（数据来自 GitHub API，在浏览器内计算）。</p></noscript>
 
   <header class="glow glow-a" aria-hidden="true"></header>
