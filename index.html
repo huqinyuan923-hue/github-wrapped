@@ -22,8 +22,9 @@
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* 进站动画：柱状图生长（每会话一次） */
-    #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:#0d1117;font-family:system-ui,sans-serif;animation:gwOut .5s ease 1.9s forwards}
-    #boot .w-logo{color:#ec4899;font-size:clamp(24px,5vw,42px);font-weight:800;animation:gwIn .5s ease both}
+    #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:radial-gradient(ellipse 80% 55% at 50% 28%,rgba(236,72,153,.12),transparent),#0d1117;font-family:system-ui,sans-serif;animation:gwOut .5s ease 2.15s forwards}
+    #boot .w-octo{font-size:44px;animation:gwIn .5s cubic-bezier(.34,1.56,.64,1) both;filter:drop-shadow(0 0 16px rgba(236,72,153,.6))}
+    #boot .w-logo{font-size:clamp(24px,5vw,42px);font-weight:800;background:linear-gradient(100deg,#ec4899,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;animation:gwIn .5s ease .15s both}
     #boot .w-bars{display:flex;align-items:flex-end;gap:9px;height:74px}
     #boot .w-bars i{width:26px;border-radius:4px 4px 0 0;background:linear-gradient(180deg,#ec4899,#8b5cf6);transform:scaleY(0);transform-origin:bottom;animation:gwBar .45s cubic-bezier(.22,1,.36,1) both}
     #boot .w-bars i:nth-child(1){height:34%;animation-delay:.3s}
@@ -44,6 +45,7 @@
 <body>
   <!-- 进站引导（每会话一次） -->
   <div id="boot" aria-hidden="true">
+    <div class="w-octo">🐙</div>
     <div class="w-logo">GitHub · WRAPPED</div>
     <div class="w-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
     <div class="w-sub">YOUR YEAR IN CODE</div>
