@@ -22,7 +22,7 @@
   <link rel="stylesheet" href="styles.css" />
   <style>
     /* 进站动画：柱状图生长（每会话一次） */
-    #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:radial-gradient(ellipse 80% 55% at 50% 28%,rgba(236,72,153,.12),transparent),#0d1117;font-family:system-ui,sans-serif;animation:gwOut .5s ease 2.15s forwards}
+    #boot{position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;background:radial-gradient(ellipse 80% 55% at 50% 28%,rgba(236,72,153,.12),transparent),#0d1117;font-family:system-ui,sans-serif;animation:gwOut .5s cubic-bezier(.65,0,.35,1) 2.65s forwards}
     #boot .w-octo{font-size:44px;animation:gwIn .5s cubic-bezier(.34,1.56,.64,1) both;filter:drop-shadow(0 0 16px rgba(236,72,153,.6))}
     #boot .w-logo{font-size:clamp(24px,5vw,42px);font-weight:800;background:linear-gradient(100deg,#ec4899,#a78bfa);-webkit-background-clip:text;background-clip:text;color:transparent;animation:gwIn .5s ease .15s both}
     #boot .w-bars{display:flex;align-items:flex-end;gap:9px;height:74px}
@@ -33,10 +33,13 @@
     #boot .w-bars i:nth-child(4){height:88%;animation-delay:.75s}
     #boot .w-bars i:nth-child(5){height:64%;animation-delay:.9s}
     #boot .w-bars i:nth-child(6){height:100%;animation-delay:1.05s}
-    #boot .w-sub{color:#94a3b8;font-size:13px;letter-spacing:.12em;opacity:0;animation:gwIn .35s ease 1.3s both}
-    @keyframes gwIn{from{opacity:0;transform:translateY(10px)}}
+    #boot .w-bar{width:min(280px,62vw);height:3px;border-radius:999px;overflow:hidden;background:rgba(236,72,153,.16);opacity:0;animation:gwIn .3s ease 1.3s both}
+    #boot .w-bar::before{content:'';display:block;height:100%;background:linear-gradient(90deg,#ec4899,#8b5cf6);transform:scaleX(0);transform-origin:left;animation:gwFill 1.2s cubic-bezier(.3,0,.4,1) 1.4s forwards}
+    #boot .w-sub{color:#94a3b8;font-size:13px;letter-spacing:.12em;opacity:0;animation:gwIn .35s ease 1.65s both}
+    @keyframes gwIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
     @keyframes gwBar{from{transform:scaleY(0)}to{transform:scaleY(1)}}
-    @keyframes gwOut{to{opacity:0;visibility:hidden;transform:scale(1.03)}}
+    @keyframes gwFill{to{transform:scaleX(1)}}
+    @keyframes gwOut{to{opacity:0;visibility:hidden;transform:scale(1.04)}}
     @media (prefers-reduced-motion:reduce){#boot{display:none}}
   </style>
   <link rel="preconnect" href="https://api.github.com" />
@@ -48,6 +51,7 @@
     <div class="w-octo">🐙</div>
     <div class="w-logo">GitHub · WRAPPED</div>
     <div class="w-bars"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+    <div class="w-bar"></div>
     <div class="w-sub">YOUR YEAR IN CODE</div>
   </div>
   <script>try{if(sessionStorage.getItem('boot-seen')){var b=document.getElementById('boot');b&&(b.style.display='none')}else{sessionStorage.setItem('boot-seen','1')}}catch(e){}</script>
